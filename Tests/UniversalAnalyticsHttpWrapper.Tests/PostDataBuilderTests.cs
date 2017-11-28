@@ -134,13 +134,5 @@ namespace UniversalAnalyticsHttpWrapper.Tests
             string actualCollectionValue = postDataCollection.Single(s => s.Key == key).Value;
             Assert.AreEqual(expectedValue, actualCollectionValue);
         }
-
-        private void ValidateKeyIsNotPresentOnPostData(string key)
-        {
-            string postDataString = postDataBuilder.BuildPostDataString(EventTracker.MEASUREMENT_PROTOCOL_VERSION, analyticsEvent);
-
-            NameValueCollection nameValueCollection = HttpUtility.ParseQueryString(postDataString);
-            Assert.True(nameValueCollection[key] == null);
-        }
     }
 }

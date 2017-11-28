@@ -36,7 +36,7 @@
         /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ec for details.</param>
         /// <param name="eventAction">Required. The event action for the event. 
         /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ea for details.</param>
-        /// <param name="eventLabel">The event label for the event.
+        /// <param name="eventLabel">Optional. The event label for the event.
         /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#el for details.</param>
         /// <param name="eventValue">Optional. The event value for the event.
         /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ev for details.</param>
