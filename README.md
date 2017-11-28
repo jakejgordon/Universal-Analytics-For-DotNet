@@ -22,6 +22,7 @@ Pushing an event is as simple as the following:
 ```
     // Use your favorite dependency injection framework for these. Singletons preferred.
     IEventTracker eventTracker = new EventTracker();
+    // The factory will use the config file to set the tracking Id.
     IUniversalAnalyticsEventFactory eventFactory = new UniversalAnalyticsEventFactory();
 
     var analyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
