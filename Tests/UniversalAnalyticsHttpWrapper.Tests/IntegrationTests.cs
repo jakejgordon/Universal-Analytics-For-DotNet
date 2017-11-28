@@ -34,6 +34,31 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         }
 
         [Test]
+        public void SampleCodeForGitHubReadMeUsingFactoryToGetUserIdEventObject()
+        {
+            //create a new EventTracker
+            IEventTracker eventTracker = new EventTracker();
+            //create a new event to pass to the event tracker
+            var analyticsEvent = eventFactory.MakeUserIdUniversalAnalyticsEvent(
+                //Required. user id. 
+                //See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#uid for details.
+                "developer-userId",
+                //Required. The event category for the event. 
+                // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ec for details.
+                "test category",
+                //Required. The event action for the event. 
+                //See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ea for details.
+                "test action",
+                //Optional. The event label for the event.
+                // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#el for details.
+                "test label",
+                //Optional. The event value for the event.
+                // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ev for details.
+                "10");
+            eventTracker.TrackEvent(analyticsEvent);
+        }
+
+        [Test]
         public void SampleCodeForGitHubReadMeManuallyConstructingEventObject()
         {
             //create a new EventTracker

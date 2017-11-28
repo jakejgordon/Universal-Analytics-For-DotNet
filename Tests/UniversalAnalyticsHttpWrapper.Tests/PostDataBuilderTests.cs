@@ -66,7 +66,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         }
 
         [Test]
-        public void ItDoesNotSetAnonymousClientIdWhenUserIdIsSet()
+        public void ItDoesNotSetAnonymousClientIdWhenUserIdIsSpecified()
         {
             analyticsEvent.Expect(m => m.UserId).Return(this.userId);
             ValidateKeyIsNotPresentOnPostData(PostDataBuilder.PARAMETER_KEY_ANONYMOUS_CLIENT_ID);

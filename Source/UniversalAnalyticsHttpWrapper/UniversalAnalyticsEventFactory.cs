@@ -54,7 +54,8 @@
                 anonymousClientId, 
                 eventCategory,
                 eventAction,
-                eventLabel);
+                eventLabel,
+                eventValue);
         }
 
         /// <inheritdoc />
@@ -65,6 +66,7 @@
                 eventCategory,
                 eventAction,
                 eventLabel,
+                eventValue,
                 userId);
         }
 
