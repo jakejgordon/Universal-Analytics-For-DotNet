@@ -38,6 +38,8 @@ namespace UniversalAnalyticsHttpWrapper.Tests
                 .Return(eventLabel);
             analyticsEvent.Expect(mock => mock.EventValue)
                 .Return(eventValue);
+            analyticsEvent.Expect(m => m.UserId)
+                .Return(userId);
         }
 
         [Test]
@@ -61,15 +63,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         [Test]
         public void ItPutsTheUserIdInTheString()
         {
-            analyticsEvent.Expect(m => m.UserId).Return(this.userId);
             ValidateKeyValuePairIsSetOnPostData(PostDataBuilder.PARAMETER_KEY_USER_ID, this.userId);
-        }
-
-        [Test]
-        public void ItDoesNotSetAnonymousClientIdWhenUserIdIsSpecified()
-        {
-            analyticsEvent.Expect(m => m.UserId).Return(this.userId);
-            ValidateKeyIsNotPresentOnPostData(PostDataBuilder.PARAMETER_KEY_ANONYMOUS_CLIENT_ID);
         }
 
         [Test]

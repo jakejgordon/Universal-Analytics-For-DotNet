@@ -46,8 +46,9 @@ namespace UniversalAnalyticsHttpWrapper
             {
                 nameValueCollection[PARAMETER_KEY_USER_ID] = analyticsEvent.UserId;
             }
-            else
-            {
+
+            if (!string.IsNullOrWhiteSpace(analyticsEvent.AnonymousClientId))
+            { 
                 nameValueCollection[PARAMETER_KEY_ANONYMOUS_CLIENT_ID] = analyticsEvent.AnonymousClientId;
             }
 
