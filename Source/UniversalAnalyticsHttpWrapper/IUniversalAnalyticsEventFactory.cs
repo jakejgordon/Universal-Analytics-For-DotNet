@@ -28,7 +28,7 @@ namespace UniversalAnalyticsHttpWrapper
         /// <exception cref="System.Web.HttpException">Thrown when the HttpRequest that's posted to Google returns something
         /// other than a 200 OK response.</exception>
         /// 
-        [Obsolete("Use clientId specific version instead such as MakeAnonymousClientIdUniversalAnalyticsEvent.", false)]
+        [Obsolete("Use clientId specific version instead such as MakeEventForAnonymousClientId.", false)]
         IUniversalAnalyticsEvent MakeUniversalAnalyticsEvent(
             string anonymousClientId,
             string eventCategory,
@@ -37,8 +37,7 @@ namespace UniversalAnalyticsHttpWrapper
             string eventValue = null);
 
         /// <summary>
-        /// This constructor expects an App Setting for 'UniversalAnalytics.TrackingId' 
-        /// in the config. UniversalAnalytics.TrackingId must be a Universal Analytics Web Property.
+        /// Creates a universal analytics event containing the 'anonymous client id' property.
         /// </summary>
         /// <param name="anonymousClientId">Required. Anonymous client id for the event. 
         /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cid for details.</param>
@@ -55,7 +54,7 @@ namespace UniversalAnalyticsHttpWrapper
         /// <exception cref="System.ArgumentException">Thrown when one of the required fields are null or whitespace.</exception>
         /// <exception cref="System.Web.HttpException">Thrown when the HttpRequest that's posted to Google returns something
         /// other than a 200 OK response.</exception>
-        IUniversalAnalyticsEvent MakeAnonymousClientIdUniversalAnalyticsEvent(
+        IUniversalAnalyticsEvent MakeEventForAnonymousClientId(
             string anonymousClientId,
             string eventCategory,
             string eventAction,
@@ -64,8 +63,7 @@ namespace UniversalAnalyticsHttpWrapper
 
 
         /// <summary>
-        /// This constructor expects an App Setting for 'UniversalAnalytics.TrackingId' 
-        /// in the config. UniversalAnalytics.TrackingId must be a Universal Analytics Web Property.
+        /// Creates a universal analytics event containing the 'user id' property.
         /// </summary>
         /// <param name="userId">Required. User id for the event. 
         /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#uid for details.</param>
@@ -82,7 +80,7 @@ namespace UniversalAnalyticsHttpWrapper
         /// <exception cref="System.ArgumentException">Thrown when one of the required fields are null or whitespace.</exception>
         /// <exception cref="System.Web.HttpException">Thrown when the HttpRequest that's posted to Google returns something
         /// other than a 200 OK response.</exception>
-        IUniversalAnalyticsEvent MakeUserIdUniversalAnalyticsEvent(
+        IUniversalAnalyticsEvent MakeEventForUserId(
             string userId,
             string eventCategory,
             string eventAction,

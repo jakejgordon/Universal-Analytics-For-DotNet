@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using Rhino.Mocks;
 
 namespace UniversalAnalyticsHttpWrapper.Tests
@@ -24,6 +25,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
              factory = new UniversalAnalyticsEventFactory(configurationManagerMock);
         }
 
+        [Obsolete("Remove when the factory method is finally removed.")]
         [Test]
         public void ItReturnsANewUniversalAnalyticsEvent()
         {
@@ -50,16 +52,15 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         public void ItReturnsAUniversalAnalyticsEventWithUserId()
         {
             configurationManagerMock.Expect(mock => mock.GetAppSetting(UniversalAnalyticsEventFactory.APP_KEY_UNIVERSAL_ANALYTICS_TRACKING_ID))
-                                    .Return(trackingId);
+                .Return(trackingId);
 
-            var analyticsEvent = factory.MakeUserIdUniversalAnalyticsEvent(
-                                                                     userId,
-                                                                     eventCategory,
-                                                                     eventAction,
-                                                                     eventLabel,
-                                                                     eventValue);
+            var analyticsEvent = factory.MakeEventForUserId(
+                userId,
+                eventCategory,
+                eventAction,
+                eventLabel,
+                eventValue);
 
-            //generally prefer to have a separate test for each case but this will do just fine.
             Assert.AreEqual(trackingId, analyticsEvent.TrackingId);
             Assert.AreEqual(userId, analyticsEvent.UserId);
             Assert.AreEqual(eventCategory, analyticsEvent.EventCategory);
@@ -72,16 +73,15 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         public void ItReturnsAUniversalAnalyticsEventWithAnonymousClientId()
         {
             configurationManagerMock.Expect(mock => mock.GetAppSetting(UniversalAnalyticsEventFactory.APP_KEY_UNIVERSAL_ANALYTICS_TRACKING_ID))
-                                    .Return(trackingId);
+                .Return(trackingId);
 
-            var analyticsEvent = factory.MakeAnonymousClientIdUniversalAnalyticsEvent(
-                                                                     anonymousClientId,
-                                                                     eventCategory,
-                                                                     eventAction,
-                                                                     eventLabel,
-                                                                     eventValue);
+            var analyticsEvent = factory.MakeEventForAnonymousClientId(
+                anonymousClientId,
+                eventCategory,
+                eventAction,
+                eventLabel,
+                eventValue);
 
-            //generally prefer to have a separate test for each case but this will do just fine.
             Assert.AreEqual(trackingId, analyticsEvent.TrackingId);
             Assert.AreEqual(anonymousClientId, analyticsEvent.AnonymousClientId);
             Assert.AreEqual(eventCategory, analyticsEvent.EventCategory);
