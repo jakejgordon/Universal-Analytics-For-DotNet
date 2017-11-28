@@ -11,12 +11,14 @@ namespace UniversalAnalyticsHttpWrapper.Tests
     {
         private PostDataBuilder postDataBuilder;
         private IUniversalAnalyticsEvent analyticsEvent;
+
         private string trackingId = "UA-52123335-1";
         private string anonymousClientId = "anonymous client id";
         private string eventCategory = "event category";
         private string eventAction = "event action";
         private string eventLabel = "event label";
         private string eventValue = "500";
+        private string userId = "user id";
 
         [SetUp]
         public void SetUp()
@@ -54,6 +56,20 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         public void ItPutsTheAnonymousClientIdInTheString()
         {
             ValidateKeyValuePairIsSetOnPostData(PostDataBuilder.PARAMETER_KEY_ANONYMOUS_CLIENT_ID, anonymousClientId);
+        }
+
+        [Test]
+        public void ItPutsTheUserIdInTheString()
+        {
+            analyticsEvent.Expect(m => m.UserId).Return(this.userId);
+            ValidateKeyValuePairIsSetOnPostData(PostDataBuilder.PARAMETER_KEY_USER_ID, this.userId);
+        }
+
+        [Test]
+        public void ItDoesNotSetAnonymousClientIdWhenUserIdIsSet()
+        {
+            analyticsEvent.Expect(m => m.UserId).Return(this.userId);
+            ValidateKeyIsNotPresentOnPostData(PostDataBuilder.PARAMETER_KEY_ANONYMOUS_CLIENT_ID);
         }
 
         [Test]
@@ -123,6 +139,14 @@ namespace UniversalAnalyticsHttpWrapper.Tests
             var postDataCollection = postDataBuilder.BuildPostDataCollection(EventTracker.MEASUREMENT_PROTOCOL_VERSION, analyticsEvent);
             string actualCollectionValue = postDataCollection.Single(s => s.Key == key).Value;
             Assert.AreEqual(expectedValue, actualCollectionValue);
+        }
+
+        private void ValidateKeyIsNotPresentOnPostData(string key)
+        {
+            string postDataString = postDataBuilder.BuildPostDataString(EventTracker.MEASUREMENT_PROTOCOL_VERSION, analyticsEvent);
+
+            NameValueCollection nameValueCollection = HttpUtility.ParseQueryString(postDataString);
+            Assert.True(nameValueCollection[key] == null);
         }
     }
 }
