@@ -7,7 +7,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
     public class UniversalAnalyticsEventTests
     {
         private string trackingId = "A-XXXXXX-YY";
-        private string anonymousClientId = "anonymous client id";
+        private string clientId = "anonymous client id";
         private string eventCategory = "event category";
         private string eventAction = "event action";
         private string eventLabel = "event label";
@@ -19,7 +19,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         {
             Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
                 "   ",
-                anonymousClientId,
+                clientId,
                 eventCategory,
                 eventAction,
                 eventLabel));
@@ -35,7 +35,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         {
             Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
                 null,
-                anonymousClientId,
+                clientId,
                 eventCategory,
                 eventAction,
                 eventLabel,
@@ -95,7 +95,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         {
             UniversalAnalyticsEvent universalAnalyticsEvent = GetFullyPopulatedEventUsingConstructor();
 
-            Assert.AreEqual(anonymousClientId, universalAnalyticsEvent.AnonymousClientId);
+            Assert.AreEqual(this.clientId, universalAnalyticsEvent.AnonymousClientId);
         }
 
         [Test]
@@ -103,7 +103,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         {
             Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
                 trackingId, 
-                anonymousClientId, 
+                clientId, 
                 "  ",
                 eventAction,
                 eventLabel));
@@ -119,7 +119,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         {
             Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
                 trackingId, 
-                anonymousClientId, 
+                clientId, 
                 null,
                 eventAction,
                 eventLabel));
@@ -135,7 +135,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         {
             UniversalAnalyticsEvent universalAnalyticsEvent = new UniversalAnalyticsEvent(
                 trackingId, 
-                anonymousClientId, 
+                clientId, 
                 eventCategory,
                 eventAction,
                 eventLabel);
@@ -148,7 +148,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         {
             UniversalAnalyticsEvent universalAnalyticsEvent = new UniversalAnalyticsEvent(
                 trackingId,
-                anonymousClientId,
+                clientId,
                 eventCategory,
                 eventAction,
                 eventLabel,
@@ -164,7 +164,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         {
             Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
                 trackingId, 
-                anonymousClientId,
+                clientId,
                 eventCategory,
                 "  ",
                 eventLabel));
@@ -180,7 +180,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         {
             Exception exception = Assert.Throws<ArgumentException>(() => new UniversalAnalyticsEvent(
                 trackingId, 
-                anonymousClientId, 
+                clientId, 
                 eventCategory,
                 null,
                 eventLabel));
@@ -196,7 +196,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         {
             UniversalAnalyticsEvent universalAnalyticsEvent = new UniversalAnalyticsEvent(
                 trackingId, 
-                anonymousClientId, 
+                clientId, 
                 eventCategory,
                 eventAction,
                 eventLabel);
@@ -209,7 +209,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         {
             UniversalAnalyticsEvent universalAnalyticsEvent = new UniversalAnalyticsEvent(
                 trackingId, 
-                anonymousClientId, 
+                this.clientId, 
                 eventCategory, 
                 eventAction, 
                 eventLabel);
@@ -222,7 +222,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         {
             UniversalAnalyticsEvent universalAnalyticsEvent = new UniversalAnalyticsEvent(
                 trackingId,
-                anonymousClientId, 
+                this.clientId, 
                 eventCategory, 
                 eventAction, 
                 eventLabel, 
@@ -235,7 +235,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         {
             UniversalAnalyticsEvent universalAnalyticsEvent = new UniversalAnalyticsEvent(
                 trackingId,
-                anonymousClientId,
+                this.clientId,
                 eventCategory,
                 eventAction,
                 eventLabel,

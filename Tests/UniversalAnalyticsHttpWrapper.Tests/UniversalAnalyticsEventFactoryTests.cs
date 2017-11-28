@@ -10,7 +10,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         private IConfigurationManager configurationManagerMock;
         UniversalAnalyticsEventFactory factory;
         private string trackingId = "tracking id";
-        private string anonymousClientId = "anonymous client id";
+        private string clientId = "anonymous client id";
         private string eventCategory = "event category";
         private string eventAction = "event action";
         private string eventLabel = "event label";
@@ -33,7 +33,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
                 .Return(trackingId);
 
             var analyticsEvent = factory.MakeUniversalAnalyticsEvent(
-                anonymousClientId,
+                clientId,
                 eventCategory,
                 eventAction,
                 eventLabel,
@@ -41,7 +41,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
 
             //generally prefer to have a separate test for each case but this will do just fine.
             Assert.AreEqual(trackingId, analyticsEvent.TrackingId);
-            Assert.AreEqual(anonymousClientId, analyticsEvent.AnonymousClientId);
+            Assert.AreEqual(clientId, analyticsEvent.AnonymousClientId);
             Assert.AreEqual(eventCategory, analyticsEvent.EventCategory);
             Assert.AreEqual(eventAction, analyticsEvent.EventAction);
             Assert.AreEqual(eventLabel, analyticsEvent.EventLabel);
@@ -70,20 +70,20 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         }
 
         [Test]
-        public void ItReturnsAUniversalAnalyticsEventWithAnonymousClientId()
+        public void ItReturnsAUniversalAnalyticsEventWithClientId()
         {
             configurationManagerMock.Expect(mock => mock.GetAppSetting(UniversalAnalyticsEventFactory.APP_KEY_UNIVERSAL_ANALYTICS_TRACKING_ID))
                 .Return(trackingId);
 
-            var analyticsEvent = factory.MakeEventForAnonymousClientId(
-                anonymousClientId,
+            var analyticsEvent = factory.MakeEventForClientId(
+                clientId,
                 eventCategory,
                 eventAction,
                 eventLabel,
                 eventValue);
 
             Assert.AreEqual(trackingId, analyticsEvent.TrackingId);
-            Assert.AreEqual(anonymousClientId, analyticsEvent.AnonymousClientId);
+            Assert.AreEqual(clientId, analyticsEvent.AnonymousClientId);
             Assert.AreEqual(eventCategory, analyticsEvent.EventCategory);
             Assert.AreEqual(eventAction, analyticsEvent.EventAction);
             Assert.AreEqual(eventLabel, analyticsEvent.EventLabel);

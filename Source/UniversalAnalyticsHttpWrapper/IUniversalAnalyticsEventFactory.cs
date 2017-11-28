@@ -54,7 +54,7 @@ namespace UniversalAnalyticsHttpWrapper
         /// <exception cref="System.ArgumentException">Thrown when one of the required fields are null or whitespace.</exception>
         /// <exception cref="System.Web.HttpException">Thrown when the HttpRequest that's posted to Google returns something
         /// other than a 200 OK response.</exception>
-        IUniversalAnalyticsEvent MakeEventForAnonymousClientId(
+        IUniversalAnalyticsEvent MakeEventForClientId(
             string anonymousClientId,
             string eventCategory,
             string eventAction,
