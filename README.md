@@ -18,15 +18,14 @@ Pushing an event is as simple as the following:
 </configuration>
 ```
 
-2. Push an event using Google's `anonymousClientId` (https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cid) or `userId` (https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#uid):
+2. Push an event using Google's `anonymousClientId` (https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cid) and/or `userId` (https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#uid):
 ```
     // Use your favorite dependency injection framework for these. Singletons preferred.
     IEventTracker eventTracker = new EventTracker();
     IUniversalAnalyticsEventFactory eventFactory = new UniversalAnalyticsEventFactory();
 
-    // Method 1: Track via 'clientId'
-    var analyticsEvent = eventFactory.MakeEventForClientId(
-       //Required. client id. 
+    var analyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
+       //Required if no user id. 
        //See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cid for details.
        "anonymous-client-id",
        //Required. The event category for the event. 
@@ -40,26 +39,11 @@ Pushing an event is as simple as the following:
        "test label",
        //Optional. The event value for the event.
        // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ev for details.
-       "10");
-    eventTracker.TrackEvent(analyticsEvent);
-
-    // Method 2: Track via 'userId'
-    analyticsEvent = eventFactory.MakeEventForUserId(
-        //Required. user id. 
-        //See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#uid for details.
-        "non-pii-user-id",
-        //Required. The event category for the event. 
-        // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ec for details.
-        "test category",
-        //Required. The event action for the event. 
-        //See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ea for details.
-        "test action",
-        //Optional. The event label for the event.
-        // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#el for details.
-        "test label",
-        //Optional. The event value for the event.
-        // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ev for details.
-        "10");
+       "10",
+       //Required if no client id. 
+       //See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#uid for details.
+       "user-id"
+       );
     eventTracker.TrackEvent(analyticsEvent);
 ```
 
