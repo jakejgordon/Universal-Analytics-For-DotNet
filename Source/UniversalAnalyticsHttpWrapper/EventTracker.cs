@@ -43,22 +43,41 @@ namespace UniversalAnalyticsHttpWrapper
         /// Pushes an event up to the Universal Analytics web property specified in the .config file.
         /// </summary>
         /// <param name="analyticsEvent">The event to be logged.</param>
-        public void TrackEvent(IUniversalAnalyticsEvent analyticsEvent)
-        {
+        public TrackingResult TrackEvent(IUniversalAnalyticsEvent analyticsEvent)
+        { 
+            var result = new TrackingResult();
             string postData = postDataBuilder.BuildPostDataString(MEASUREMENT_PROTOCOL_VERSION, analyticsEvent);
+            try
+            {
+                googleDataSender.SendData(GOOGLE_COLLECTION_URI, postData);
+            }
+            catch (Exception e)
+            {
+                result.Exception = e;
+            }
 
-            googleDataSender.SendData(GOOGLE_COLLECTION_URI, postData);
+            return result;
         }
 
         /// <summary>
         /// Pushes an event up to the Universal Analytics web property specified in the .config file.
         /// </summary>
         /// <param name="analyticsEvent">The event to be logged.</param>
-        public async Task TrackEventAsync(IUniversalAnalyticsEvent analyticsEvent)
+        public async Task<TrackingResult> TrackEventAsync(IUniversalAnalyticsEvent analyticsEvent)
         {
+            var result = new TrackingResult();
             var postData = postDataBuilder.BuildPostDataCollection(MEASUREMENT_PROTOCOL_VERSION, analyticsEvent);
 
-            await googleDataSender.SendDataAsync(GOOGLE_COLLECTION_URI, postData);
+            try
+            {
+                await googleDataSender.SendDataAsync(GOOGLE_COLLECTION_URI, postData);
+            }
+            catch (Exception e)
+            {
+                result.Exception = e;
+            }
+
+            return result;
         }
     }
 }
