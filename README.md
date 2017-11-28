@@ -43,7 +43,7 @@ Pushing an event is as simple as the following:
        "10");
     eventTracker.TrackEvent(analyticsEvent);
 
-    // Method 2: 'Track via userId'
+    // Method 2: Track via 'userId'
     analyticsEvent = eventFactory.MakeEventForUserId(
         //Required. user id. 
         //See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#uid for details.
