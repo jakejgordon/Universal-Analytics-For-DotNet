@@ -20,32 +20,40 @@ Pushing an event is as simple as the following:
 
 2. Push an event using Google's `anonymousClientId` (https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cid) and/or `userId` (https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#uid):
 ```
-    // Use your favorite dependency injection framework for these. Singletons preferred.
-    IEventTracker eventTracker = new EventTracker();
-    // The factory will use the config file to set the tracking Id.
-    IUniversalAnalyticsEventFactory eventFactory = new UniversalAnalyticsEventFactory();
+    // Use your favorite dependency injection framework for the tracker and factory. Singletons preferred.
+            IEventTracker eventTracker = new EventTracker();
+            // The factory pulls your tracking ID from the .config so you don't have to.
+            IUniversalAnalyticsEventFactory eventFactory = new UniversalAnalyticsEventFactory();
 
-    var analyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
-       //Required if no user id. 
-       //See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cid for details.
-       "anonymous-client-id",
-       //Required. The event category for the event. 
-       // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ec for details.
-       "test category",
-       //Required. The event action for the event. 
-       //See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ea for details.
-       "test action",
-       //Optional. The event label for the event.
-       // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#el for details.
-       "test label",
-       //Optional. The event value for the event.
-       // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ev for details.
-       "10",
-       //Required if no client id. 
-       //See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#uid for details.
-       "user-id"
-       );
-    eventTracker.TrackEvent(analyticsEvent);
+            var analyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
+               // Required if no user id. 
+               // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cid for details.
+               "35009a79-1a05-49d7-b876-2b884d0f825b",
+               // Required. The event category for the event. 
+               // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ec for details.
+               "test category",
+               // Required. The event action for the event. 
+               //See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ea for details.
+               "test action",
+               // Optional. The event label for the event.
+               // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#el for details.
+               "test label",
+               // Optional. The event value for the event.
+               // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ev for details.
+               "10",
+               // Required if no client id. 
+               // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#uid for details.
+               "user-id"
+               );
+
+            // Exceptions are contained in the result object and not thrown for stability reasons.
+            var trackingResult = eventTracker.TrackEvent(analyticsEvent);
+
+            if (trackingResult.Failed)
+            {
+                // Log to the appropriate error handler.
+                Console.Error.WriteLine(trackingResult.Exception);
+            }
 ```
 
 The code is almost entirely unit/integration tested so it should be stable and easily updatable. I'm using it on my own site right now so you can find more specific examples at: https://github.com/jakejgordon/NemeStats 
