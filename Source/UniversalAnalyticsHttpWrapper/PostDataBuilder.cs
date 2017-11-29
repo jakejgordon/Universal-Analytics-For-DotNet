@@ -41,7 +41,6 @@ namespace UniversalAnalyticsHttpWrapper
             nameValueCollection[PARAMETER_KEY_VERSION] = measurementProtocolVersion;
             nameValueCollection[PARAMETER_KEY_TRACKING_ID] = analyticsEvent.TrackingId;
 
-            // Prefer userId over anonymousClientId. It is an error to set both.
             if (!string.IsNullOrWhiteSpace(analyticsEvent.UserId))
             {
                 nameValueCollection[PARAMETER_KEY_USER_ID] = analyticsEvent.UserId;

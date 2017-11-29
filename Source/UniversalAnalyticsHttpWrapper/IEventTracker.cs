@@ -9,14 +9,17 @@ namespace UniversalAnalyticsHttpWrapper
     public interface IEventTracker
     {
         /// <summary>
-        /// 
+        /// Tracks the event and puts the result in a container object.
         /// </summary>
         /// <param name="analyticsEvent"></param>
+        /// <returns>The result of the tracking operation</returns>
         TrackingResult TrackEvent(IUniversalAnalyticsEvent analyticsEvent);
+        
         /// <summary>
-        /// 
+        /// Tracks the event and puts the result in a container object.
         /// </summary>
         /// <param name="analyticsEvent"></param>
+        /// <returns>The result of the tracking operation</returns>
         Task<TrackingResult> TrackEventAsync(IUniversalAnalyticsEvent analyticsEvent);
     }
 }

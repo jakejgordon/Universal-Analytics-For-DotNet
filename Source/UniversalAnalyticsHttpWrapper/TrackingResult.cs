@@ -4,7 +4,7 @@ using System.Linq;
 namespace UniversalAnalyticsHttpWrapper
 {
     /// <summary>
-    /// Result of the tracking operation
+    /// Result of a tracking request.
     /// </summary>
     public class TrackingResult
     {
@@ -14,13 +14,13 @@ namespace UniversalAnalyticsHttpWrapper
         /// <param name="exception"></param>
         public TrackingResult(Exception exception = null)
         {
-            Exception = exception;
+            this.Exception = exception;
         }
 
         /// <summary>
         /// Checks if the tracking attempt was successful.
         /// </summary>
-        public bool Successful => Exception == null;
+        public bool Failed => Exception != null;
         /// <summary>
         /// An exception caught during the tracking process. Not thrown for stability.
         /// </summary>
