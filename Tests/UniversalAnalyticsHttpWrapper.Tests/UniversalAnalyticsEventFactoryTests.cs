@@ -16,12 +16,19 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         private string eventLabel = "event label";
         private string eventValue = "500";
         private string userId = "user id";
+        private Guid cidGuid = Guid.Empty;
+        private IAnonymousClientId clientIdFromGuid;
+        private IAnonymousClientId clientIdFromString;
+        private IUserId userIdFromString;
 
         [SetUp]
         public void SetUp()
         {
             configurationManagerMock = MockRepository.GenerateMock<IConfigurationManager>();
             factory = new UniversalAnalyticsEventFactory(configurationManagerMock);
+            clientIdFromGuid = new AnonymousClientId(cidGuid);
+            clientIdFromString = new AnonymousClientId(clientId);
+            userIdFromString = new UserId(userId);
         }
 
         [Test]
@@ -46,6 +53,57 @@ namespace UniversalAnalyticsHttpWrapper.Tests
             Assert.AreEqual(eventLabel, analyticsEvent.EventLabel);
             Assert.AreEqual(eventValue, analyticsEvent.EventValue);
             Assert.AreEqual(userId, analyticsEvent.UserId);
+        }
+
+        [Test]
+        public void ItReturnsANewUniversalAnalyticsEventWithGuidClientId()
+        {
+            configurationManagerMock.Expect(mock => mock.GetAppSetting(UniversalAnalyticsEventFactory.APP_KEY_UNIVERSAL_ANALYTICS_TRACKING_ID))
+                .Return(trackingId);
+
+            var analyticsEvent = factory.MakeUniversalAnalyticsEvent(new AnonymousClientId(cidGuid),
+                eventCategory, eventAction, eventLabel, eventValue);
+
+            Assert.AreEqual(trackingId, analyticsEvent.TrackingId);
+            Assert.AreEqual(clientIdFromGuid.Id.ToString(), analyticsEvent.AnonymousClientId);
+            Assert.AreEqual(eventCategory, analyticsEvent.EventCategory);
+            Assert.AreEqual(eventAction, analyticsEvent.EventAction);
+            Assert.AreEqual(eventLabel, analyticsEvent.EventLabel);
+            Assert.AreEqual(eventValue, analyticsEvent.EventValue);
+        }
+
+        [Test]
+        public void ItReturnsANewUniversalAnalyticsEventWithStringClientId()
+        {
+            configurationManagerMock.Expect(mock => mock.GetAppSetting(UniversalAnalyticsEventFactory.APP_KEY_UNIVERSAL_ANALYTICS_TRACKING_ID))
+                .Return(trackingId);
+
+            var analyticsEvent = factory.MakeUniversalAnalyticsEvent(new AnonymousClientId(clientId),
+                eventCategory, eventAction, eventLabel, eventValue);
+
+            Assert.AreEqual(trackingId, analyticsEvent.TrackingId);
+            Assert.AreEqual(clientIdFromString.Id.ToString(), analyticsEvent.AnonymousClientId);
+            Assert.AreEqual(eventCategory, analyticsEvent.EventCategory);
+            Assert.AreEqual(eventAction, analyticsEvent.EventAction);
+            Assert.AreEqual(eventLabel, analyticsEvent.EventLabel);
+            Assert.AreEqual(eventValue, analyticsEvent.EventValue);
+        }
+
+        [Test]
+        public void ItReturnsANewUniversalAnalyticsEventWithUserId()
+        {
+            configurationManagerMock.Expect(mock => mock.GetAppSetting(UniversalAnalyticsEventFactory.APP_KEY_UNIVERSAL_ANALYTICS_TRACKING_ID))
+                .Return(trackingId);
+
+            var analyticsEvent = factory.MakeUniversalAnalyticsEvent(new UserId(userId), 
+                eventCategory, eventAction, eventLabel, eventValue);
+
+            Assert.AreEqual(trackingId, analyticsEvent.TrackingId);
+            Assert.AreEqual(eventCategory, analyticsEvent.EventCategory);
+            Assert.AreEqual(eventAction, analyticsEvent.EventAction);
+            Assert.AreEqual(eventLabel, analyticsEvent.EventLabel);
+            Assert.AreEqual(eventValue, analyticsEvent.EventValue);
+            Assert.AreEqual(userIdFromString.Id, analyticsEvent.UserId);
         }
     }
 }
