@@ -55,21 +55,21 @@ var analyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
 You can also push an event with client id without creating a AnonymousClientId:
 ```
 var analyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
-// Required. The client id for this event. 
-// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cid for details.
-"35009a79-1a05-49d7-b876-2b884d0f825b",
-// Required. The event category for the event. 
-// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ec for details.
-"test category",
-// Required. The event action for the event. 
-//See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ea for details.
-"test action",
-// Optional. The event label for the event.
-// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#el for details.
-"test label",
-// Optional. The event value for the event.
-// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ev for details.
-"10");
+	// Required. The client id for this event. 
+	// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cid for details.
+	"35009a79-1a05-49d7-b876-2b884d0f825b",
+	// Required. The event category for the event. 
+	// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ec for details.
+	"test category",
+	// Required. The event action for the event. 
+	//See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ea for details.
+	"test action",
+	// Optional. The event label for the event.
+	// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#el for details.
+	"test label",
+	// Optional. The event value for the event.
+	// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ev for details.
+	"10");
 ```
 
 
