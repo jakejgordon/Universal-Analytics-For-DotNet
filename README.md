@@ -18,17 +18,96 @@ Pushing an event is as simple as the following:
 </configuration>
 ```
 
-2. Push an event using Google's `anonymousClientId` (https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cid) and/or `userId` (https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#uid):
+2. Create an event tracker and factory for easy tracking; you can use your favorite injection framework for the tracker and factory. Singletons preferred.
 ```
-    // Use your favorite dependency injection framework for the tracker and factory. Singletons preferred.
             IEventTracker eventTracker = new EventTracker();
             // The factory pulls your tracking ID from the .config so you don't have to.
             IUniversalAnalyticsEventFactory eventFactory = new UniversalAnalyticsEventFactory();
+```
 
-            var analyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
-               // Required if no user id. 
+3. Push an event using Google's `anonymousClientId` (https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cid):
+```
+			// Create a clientId with a random Guid...
+			IAnonymousClientId clientId = new AnonymousClientId();
+			// OR from a supplied Guid...
+			IAnonymousClientId clientId = new AnonymousClientId(new Guid("...");
+			// OR from a supplied string (creates a version 5 guid from the string as the client id).
+			IAnonymousClientId clientId = new AnonymousClientId("...");
+			
+			var analyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
+			   // Required. The client id associated with this event.
+               // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cid for details.
+               clientId,
+               // Required. The event category for the event. 
+               // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ec for details.
+               "test category",
+               // Required. The event action for the event. 
+               //See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ea for details.
+               "test action",
+               // Optional. The event label for the event.
+               // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#el for details.
+               "test label",
+               // Optional. The event value for the event.
+               // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ev for details.
+               "10");
+```
+
+You can also push an event with client id without creating a AnonymousClientId:
+```
+			   var analyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
+               // Required. The client id for this event. 
                // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cid for details.
                "35009a79-1a05-49d7-b876-2b884d0f825b",
+               // Required. The event category for the event. 
+               // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ec for details.
+               "test category",
+               // Required. The event action for the event. 
+               //See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ea for details.
+               "test action",
+               // Optional. The event label for the event.
+               // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#el for details.
+               "test label",
+               // Optional. The event value for the event.
+               // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ev for details.
+               "10",
+			   // The user id for this event.
+			   // In this case it can be null as the client id is being used.
+			   null
+               );
+```
+
+
+4. Or, push an event using Google's `userId` (https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#uid):
+```
+			// Create a user id from a string
+			IUserId userId = new UserId("user id");
+			
+			// Create an event with a user id:
+			var analyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
+			   // Required. The user id associated with this event.
+               // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#uid for details.
+			   userId,
+               // Required. The event category for the event. 
+               // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ec for details.
+               "test category",
+               // Required. The event action for the event. 
+               //See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ea for details.
+               "test action",
+               // Optional. The event label for the event.
+               // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#el for details.
+               "test label",
+               // Optional. The event value for the event.
+               // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ev for details.
+               "10",
+               );
+```
+
+You can also push an event with a user id without creating a UserId:
+```
+            var analyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
+               // This is the client id.
+			   // In this case it can be null as the user id is being used.
+			   null,
                // Required. The event category for the event. 
                // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ec for details.
                "test category",
@@ -45,10 +124,14 @@ Pushing an event is as simple as the following:
                // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#uid for details.
                "user-id"
                );
+```
 
-            // Exceptions are contained in the result object and not thrown for stability reasons.
+6. Now, all you need to do is push the event to Google Analytics using the EventTracker:
+
+```
             var trackingResult = eventTracker.TrackEvent(analyticsEvent);
 
+			// Note that exceptions are contained in the result object and not thrown for stability reasons.
             if (trackingResult.Failed)
             {
                 // Log to the appropriate error handler.
