@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace UniversalAnalyticsHttpWrapper
 {
-    class AnonymousClientId : IAnonymousClientId
+    public class AnonymousClientId : IAnonymousClientId
     {
         // Randomly generated UUID chosen as the 'namespace' for generating deterministic GUIDs from strings for use as
         // anonymous client ids.

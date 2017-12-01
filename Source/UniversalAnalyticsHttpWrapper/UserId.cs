@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UniversalAnalyticsHttpWrapper
 {
-    class UserId : IUserId
+    public class UserId : IUserId
     {
         public UserId(string id)
         {
