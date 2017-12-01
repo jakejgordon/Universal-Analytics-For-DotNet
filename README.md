@@ -8,7 +8,7 @@ A .NET wrapper over top of Google's Universal Analytics Measurement Protocol HTT
 
 Pushing an event is as simple as the following:
 
-1. Add your tracking id to your App.config/Web.config:
+First, add your tracking id to your App.config/Web.config:
 ```
 <configuration>
     <appSettings>
@@ -18,14 +18,15 @@ Pushing an event is as simple as the following:
 </configuration>
 ```
 
-2. Create an event tracker and factory for easy tracking; you can use your favorite injection framework for the tracker and factory. Singletons preferred.
+Then, create an event tracker and factory; you can use your favorite injection framework for the tracker and factory. Singletons preferred.
 ```
 IEventTracker eventTracker = new EventTracker();
 // The factory pulls your tracking ID from the .config so you don't have to.
 IUniversalAnalyticsEventFactory eventFactory = new UniversalAnalyticsEventFactory();
 ```
 
-3. Push an event using Google's `anonymousClientId` (https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cid):
+Then, you must create an event to push to Google Analytics. Note that Google has defined that an event must have either a `cid`, (see here)[https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cid], or 'uid', (see here)[https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#uid].
+To create an event with an anonymous client id:
 ```
 // Create a clientId with a random Guid...
 IAnonymousClientId clientId = new AnonymousClientId();
@@ -52,7 +53,7 @@ var analyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
    "10");
 ```
 
-You can also push an event with client id without creating a AnonymousClientId:
+You can also push an client id event without using AnonymousClientId:
 ```
 var analyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
 	// Required. The client id for this event. 
@@ -72,8 +73,7 @@ var analyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
 	"10");
 ```
 
-
-4. Or, push an event using Google's `userId` (https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#uid):
+Or, to push an event with a user id:
 ```
 // Create a user id from a string
 IUserId userId = new UserId("user id");
@@ -97,7 +97,7 @@ var analyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
    "10");
 ```
 
-You can also push an event with a user id without creating a UserId:
+You can also push an event with a user id without using UserId:
 ```
 var analyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
    // This is the client id. To specify a user id as a string, this must be null.
@@ -119,7 +119,7 @@ var analyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
    "user-id");
 ```
 
-6. Now, all you need to do is push the event to Google Analytics using the EventTracker:
+Finally, all you need to do is push the event to Google Analytics using the EventTracker:
 
 ```
 var trackingResult = eventTracker.TrackEvent(analyticsEvent);
