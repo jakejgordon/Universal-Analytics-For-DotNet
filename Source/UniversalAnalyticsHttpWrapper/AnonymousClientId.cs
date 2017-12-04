@@ -7,17 +7,29 @@ using System.Threading.Tasks;
 
 namespace UniversalAnalyticsHttpWrapper
 {
+    /// <summary>
+    /// Data object holding a GUID representing an anonymous client id (or cid).
+    /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cid
+    /// </summary>
     public class AnonymousClientId : IAnonymousClientId
     {
         // Randomly generated UUID chosen as the 'namespace' for generating deterministic GUIDs from strings for use as
         // anonymous client ids.
         private static readonly Guid CidNamespace = new Guid("174bb9db-f7df-4503-9302-56c6d58e53d2");
 
+        /// <summary>
+        /// Creates a new client id with a random Guid as the id.
+        /// </summary>
         public AnonymousClientId()
         {
             Id = Guid.NewGuid();
         }
 
+        /// <summary>
+        /// Creates a new client id with the supplied Guid 'id' as the client id.
+        /// </summary>
+        /// <param name="id">The Guid representing the client id.</param>
+        /// <exception cref="ArgumentNullException">Thrown if 'id' is null.</exception>
         public AnonymousClientId(Guid id)
         {
             if (id == null)
@@ -28,6 +40,15 @@ namespace UniversalAnalyticsHttpWrapper
             Id = id;
         }
 
+        /// <summary>
+        /// Creates a new client id based upon a string 'id' (or 'name' in the context of 
+        /// GUIDs, see RFC 4122). This client id is constructed as a version 5 GUID; essentially,
+        /// a SHA-1 hash of 'CidNamespace' and 'id' concatenated is used to generate a new
+        /// "deterministic" GUID. This is intended for use with anonymous data that can identify
+        /// a client.
+        /// </summary>
+        /// <param name="id">A string used to generate the underlying cid Guid.</param>
+        /// <exception cref="ArgumentNullException">Thrown if 'id' is null.</exception>
         public AnonymousClientId(string id)
         {
             // Use a version 5 UUID generated from the SHA1 hash of 'id'
