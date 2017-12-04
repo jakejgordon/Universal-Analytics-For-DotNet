@@ -18,7 +18,7 @@ First, add your tracking id to your App.config/Web.config:
 </configuration>
 ```
 
-Then, create an event tracker and factory; you can use your favorite injection framework for the tracker and factory. Singletons preferred.
+Then, create an event tracker and factory - note that you can use your favorite injection framework. Singletons are preferred.
 ```
 IEventTracker eventTracker = new EventTracker();
 // The factory pulls your tracking ID from the .config so you don't have to.
@@ -31,7 +31,7 @@ To create an event with an anonymous client id:
 // Create a clientId with a random Guid...
 IAnonymousClientId clientId = new AnonymousClientId();
 // OR from a supplied Guid...
-IAnonymousClientId clientId = new AnonymousClientId(new Guid("...");
+IAnonymousClientId clientId = new AnonymousClientId(new Guid("..."));
 // OR from a supplied string (creates a version 5 guid from the string as the client id).
 IAnonymousClientId clientId = new AnonymousClientId("...");
 
