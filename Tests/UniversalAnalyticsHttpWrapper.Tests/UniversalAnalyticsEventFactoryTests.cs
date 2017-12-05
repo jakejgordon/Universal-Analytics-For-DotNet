@@ -1,6 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 using Rhino.Mocks;
+using UniversalAnalyticsHttpWrapper.Objects;
 
 namespace UniversalAnalyticsHttpWrapper.Tests
 {
@@ -17,17 +18,17 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         private string eventValue = "500";
         private string userId = "user id";
         private Guid cidGuid = Guid.Empty;
-        private IAnonymousClientId clientIdFromGuid;
-        private IAnonymousClientId clientIdFromString;
-        private IUserId userIdFromString;
+        private ClientId clientIdFromGuid;
+        private ClientId clientIdFromString;
+        private UserId userIdFromString;
 
         [SetUp]
         public void SetUp()
         {
             configurationManagerMock = MockRepository.GenerateMock<IConfigurationManager>();
             factory = new UniversalAnalyticsEventFactory(configurationManagerMock);
-            clientIdFromGuid = new AnonymousClientId(cidGuid);
-            clientIdFromString = new AnonymousClientId(clientId);
+            clientIdFromGuid = new ClientId(cidGuid);
+            clientIdFromString = new ClientId(clientId);
             userIdFromString = new UserId(userId);
         }
 
@@ -61,7 +62,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
             configurationManagerMock.Expect(mock => mock.GetAppSetting(UniversalAnalyticsEventFactory.APP_KEY_UNIVERSAL_ANALYTICS_TRACKING_ID))
                 .Return(trackingId);
 
-            var analyticsEvent = factory.MakeUniversalAnalyticsEvent(new AnonymousClientId(cidGuid),
+            var analyticsEvent = factory.MakeUniversalAnalyticsEvent(new ClientId(cidGuid),
                 eventCategory, eventAction, eventLabel, eventValue);
 
             Assert.AreEqual(trackingId, analyticsEvent.TrackingId);
@@ -78,7 +79,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
             configurationManagerMock.Expect(mock => mock.GetAppSetting(UniversalAnalyticsEventFactory.APP_KEY_UNIVERSAL_ANALYTICS_TRACKING_ID))
                 .Return(trackingId);
 
-            var analyticsEvent = factory.MakeUniversalAnalyticsEvent(new AnonymousClientId(clientId),
+            var analyticsEvent = factory.MakeUniversalAnalyticsEvent(new ClientId(clientId),
                 eventCategory, eventAction, eventLabel, eventValue);
 
             Assert.AreEqual(trackingId, analyticsEvent.TrackingId);

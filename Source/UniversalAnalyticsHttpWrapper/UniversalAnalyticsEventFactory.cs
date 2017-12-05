@@ -1,4 +1,5 @@
 ﻿using System;
+using UniversalAnalyticsHttpWrapper.Objects;
 
 namespace UniversalAnalyticsHttpWrapper
 {
@@ -87,19 +88,19 @@ namespace UniversalAnalyticsHttpWrapper
         /// <exception cref="System.Web.HttpException">Thrown when the HttpRequest that's posted to Google returns something
         /// other than a 200 OK response.</exception>
         public IUniversalAnalyticsEvent MakeUniversalAnalyticsEvent(
-            IAnonymousClientId anonymousClientId, 
+            ClientId clientId, 
             string eventCategory,
             string eventAction, 
             string eventLabel, 
             string eventValue = null)
         {
-            if (anonymousClientId == null)
+            if (clientId == null)
             {
-                throw new ArgumentNullException(nameof(anonymousClientId));
+                throw new ArgumentNullException(nameof(clientId));
             }
 
             return MakeUniversalAnalyticsEvent(
-                anonymousClientId.Id.ToString(),
+                clientId.Id.ToString(),
                 eventCategory,
                 eventAction,
                 eventLabel,
@@ -126,7 +127,7 @@ namespace UniversalAnalyticsHttpWrapper
         /// <exception cref="System.Web.HttpException">Thrown when the HttpRequest that's posted to Google returns something
         /// other than a 200 OK response.</exception>
         public IUniversalAnalyticsEvent MakeUniversalAnalyticsEvent(
-            IUserId userId, 
+            UserId userId, 
             string eventCategory, 
             string eventAction,
             string eventLabel, 

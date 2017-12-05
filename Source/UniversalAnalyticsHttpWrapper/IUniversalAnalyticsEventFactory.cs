@@ -1,4 +1,6 @@
-﻿namespace UniversalAnalyticsHttpWrapper
+﻿using UniversalAnalyticsHttpWrapper.Objects;
+
+namespace UniversalAnalyticsHttpWrapper
 {
     /// <summary>
     /// Interface for making instances of IUniversalAnalyticsEvent objects
@@ -9,7 +11,7 @@
         /// This constructor expects an App Setting for 'UniversalAnalytics.TrackingId' 
         /// in the config. UniversalAnalytics.TrackingId must be a Universal Analytics Web Property.
         /// </summary>
-        /// <param name="anonymousClientId">Required. Anonymous client id for the event. 
+        /// <param name="clientId">Required. Anonymous client id for the event. 
         /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cid for details.</param>
         /// <param name="eventCategory">Required. The event category for the event. 
         /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ec for details.</param>
@@ -28,7 +30,7 @@
         /// other than a 200 OK response.</exception>
         /// 
         IUniversalAnalyticsEvent MakeUniversalAnalyticsEvent(
-            string anonymousClientId,
+            string clientId,
             string eventCategory,
             string eventAction,
             string eventLabel,
@@ -39,7 +41,7 @@
         /// This constructor expects an App Setting for 'UniversalAnalytics.TrackingId' 
         /// in the config. UniversalAnalytics.TrackingId must be a Universal Analytics Web Property.
         /// </summary>
-        /// <param name="anonymousClientId">Required. Anonymous client id for the event. 
+        /// <param name="clientId">Required. Anonymous client id for the event. 
         /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cid for details.</param>
         /// <param name="eventCategory">Required. The event category for the event. 
         /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#ec for details.</param>
@@ -55,7 +57,7 @@
         /// <exception cref="System.Web.HttpException">Thrown when the HttpRequest that's posted to Google returns something
         /// other than a 200 OK response.</exception>
         IUniversalAnalyticsEvent MakeUniversalAnalyticsEvent(
-            IAnonymousClientId anonymousClientId,
+            ClientId clientId,
             string eventCategory,
             string eventAction,
             string eventLabel,
@@ -81,7 +83,7 @@
         /// <exception cref="System.Web.HttpException">Thrown when the HttpRequest that's posted to Google returns something
         /// other than a 200 OK response.</exception>
         IUniversalAnalyticsEvent MakeUniversalAnalyticsEvent(
-            IUserId userId,
+            UserId userId,
             string eventCategory,
             string eventAction,
             string eventLabel,

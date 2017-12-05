@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace UniversalAnalyticsHttpWrapper
+namespace UniversalAnalyticsHttpWrapper.Objects
 {
     /// <summary>
     /// Data object holding a string representing a user id (or uid).
     /// See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#uid
     /// </summary>
-    public class UserId : IUserId
+    public class UserId
     {
         /// <summary>
         /// Creates a user id with an id of parameter 'id'.
@@ -24,9 +20,12 @@ namespace UniversalAnalyticsHttpWrapper
                 throw new ArgumentNullException(nameof(id));
             }
 
-            Id = id;
+            this.Id = id;
         }
 
+        /// <summary>
+        /// The UA user Id.
+        /// </summary>
         public string Id { get; }
     }
 }
