@@ -33,7 +33,7 @@ To create an event with a `clientId`:
 // Create a clientId with a random Guid...
 ClientId clientId = new ClientId();
 // OR from a supplied Guid...
-ClientId clientId = newClientId(new Guid("..."));
+ClientId clientId = new ClientId(new Guid("..."));
 // OR from a supplied string (creates a version 5 guid from the string as the client id).
 ClientId clientId = new ClientId("...");
 
@@ -57,9 +57,9 @@ var analyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
 
 Or create an event with a `userId`:
 
-```
+```c#
 // Create a user id from a string
-UserId userId = new UserId("user id");
+UserId userId = new UserId("user-id");
 
 // Create an event with a user id:
 var analyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
