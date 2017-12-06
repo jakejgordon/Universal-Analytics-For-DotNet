@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/01/nuspec.xsd">
     <metadata>
         <id>UniversalAnalyticsMeasurementProtocolWrapper</id>
-        <version>1.4.4</version>
+        <version>1.4.4-beta</version>
         <title>Universal Analytics Measurement Protocol .NET Wrapper</title>
         <authors>jakejgordon</authors>
         <owners>jakejgordon</owners>
