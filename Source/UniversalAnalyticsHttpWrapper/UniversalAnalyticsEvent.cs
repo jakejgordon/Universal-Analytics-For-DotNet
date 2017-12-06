@@ -104,7 +104,7 @@ namespace UniversalAnalyticsHttpWrapper
             {
                 throw new ArgumentException(
                     string.Format(EXCEPTION_MESSAGE_PARAMETER_CANNOT_BE_NULL_OR_WHITESPACE,
-                                  "analyticsEvent.Id || analyticsEvent.Id"));
+                                  "analyticsEvent.AnonymousClientId || analyticsEvent.UserId"));
             }
 
             if (string.IsNullOrWhiteSpace(EventCategory))
