@@ -25,9 +25,9 @@ IEventTracker eventTracker = new EventTracker();
 IUniversalAnalyticsEventFactory eventFactory = new UniversalAnalyticsEventFactory();
 ```
 
-Next, create an event to push to Google Analytics. Note that Google has defined that an event must have either a `clientId (cid)`, [see here](https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cid), or `userId (uid)`, [see here](https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#uid).The factory has overloads for each of these cases.
+Next, create an event to push to Google Analytics. Note that Google has defined that an event must have either a `ClientId (cid)`, [see here](https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#cid), or `UserId (uid)`, [see here](https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#uid). The factory has overloads for each of these cases.
 
-To create an event with a `clientId`:
+To create an event with a `ClientId`:
 
 ```c#
 // Create a clientId with a random Guid...
@@ -55,7 +55,7 @@ var analyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
 	"10");
 ```
 
-To create an event with a `userId`:
+To create an event with a `UserId`:
 
 ```c#
 // Create a user id from a string
@@ -80,7 +80,7 @@ var analyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
 	"10");
 ```
 
-To create an event with using both `userId` and `clientId`:
+To create an event without using `ClientId` or `UserId` objects:
 
 ```c#
 var analyticsEvent = eventFactory.MakeUniversalAnalyticsEvent(
