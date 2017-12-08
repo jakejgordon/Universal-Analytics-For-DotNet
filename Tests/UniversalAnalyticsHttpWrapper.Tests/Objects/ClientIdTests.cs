@@ -46,5 +46,12 @@ namespace UniversalAnalyticsHttpWrapper.Tests.Objects
             var expectedGuid = Guid.NewGuid();
             Assert.AreEqual(expectedGuid, new ClientId(expectedGuid).Id);
         }
+
+        [Test]
+        public void ItGeneratesEqualIdsForEqualStrings()
+        {
+            var testString = "testClientId";
+            Assert.AreEqual(new ClientId(testString).Id, new ClientId(testString).Id);
+        }
     }
 }
