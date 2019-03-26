@@ -105,5 +105,70 @@ namespace UniversalAnalyticsHttpWrapper.Tests
 
             Assert.AreEqual(expectedException, result.Exception);
         }
+
+
+        [Test]
+        public void ItRaisesExceptionIfSupportedParameterSentToCustomPayloadUserId()
+        {
+            string parameterName = PostDataBuilder.PARAMETER_KEY_USER_ID;
+            IEventTracker realEventTracker = new EventTracker();
+
+            Assert.Throws<ArgumentException>(() => realEventTracker.AddToCustomPayload(parameterName, "muDummyUserId"), "EventTracker.AddToCustomPayload must throw exception when supported parameter is passed as an argument");
+        }
+
+        [Test]
+        public void ItRaisesExceptionIfSupportedParameterSentToCustomPayloadTrackingId()
+        {
+            string parameterName = PostDataBuilder.PARAMETER_KEY_TRACKING_ID;
+            IEventTracker realEventTracker = new EventTracker();
+
+            Assert.Throws<ArgumentException>(() => realEventTracker.AddToCustomPayload(parameterName, "UA-123123-1"), "EventTracker.AddToCustomPayload must throw exception when supported parameter is passed as an argument");
+        }
+
+        [Test]
+        public void ValidateHitShouldPass()
+        {
+            IEventTracker realEventTracker = new EventTracker();
+            IUniversalAnalyticsEvent analyticsEvent = new UniversalAnalyticsEventFactory().MakeUniversalAnalyticsEvent("DummyClientId", "Dummy Category", "Dummy Action", "DummyLabel");
+
+            TrackingResult res = realEventTracker.ValidateHit(analyticsEvent);
+
+            Assert.IsTrue(!res.Failed, "Test analytics event object (_analyticsEvent) must be valid for this test method to work");
+
+            Assert.IsTrue(res.ValidationStatus, "Analytics event validation has failed. Need to reconfigure test analytics event");
+        }
+
+        [Test]
+        public void ValidateHitShouldFailIncorrectEventValue()
+        {
+            IEventTracker realEventTracker = new EventTracker();
+            IUniversalAnalyticsEvent analyticsEvent = new UniversalAnalyticsEventFactory().MakeUniversalAnalyticsEvent("DummyClientId", "Dummy Category", "Dummy Action", "DummyLabel");
+
+            realEventTracker.AddToCustomPayload("qt", "12313123123123123"); //parameter value for queue time is way above accepted values
+            TrackingResult res = realEventTracker.ValidateHit(analyticsEvent);
+
+            /*
+              Expected output from GA
+              {
+               "hitParsingResult": [ {
+                    "valid": false,
+                    "parserMessage": [ {
+                        "messageType": "ERROR",
+                        "description": "The value provided for parameter 'qt' is out of bounds. Please see http://goo.gl/a8d4RP#qt for details.",
+                        "messageCode": "VALUE_OUT_OF_BOUNDS",
+                        "parameter": "qt"
+                    } ],
+                "hit": "/debug/collect?v=1\u0026cid=sdf\u0026tid=UA-12323423-2\u0026t=event\u0026ec=123\u0026el=123\u0026ev=1\u0026qt=12313123123123123"
+                } ],
+                "parserMessage": [ {
+                "messageType": "INFO",
+                "description": "Found 1 hit in the request."
+                } ]
+            }
+            */
+
+            Assert.IsTrue(!res.ValidationStatus, "Validation should fail here as parameter value for queue time is way above accepted values");
+        }
+
     }
 }

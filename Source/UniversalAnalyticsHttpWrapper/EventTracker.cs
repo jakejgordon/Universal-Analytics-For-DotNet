@@ -21,7 +21,7 @@ namespace UniversalAnalyticsHttpWrapper
         /// <summary>
         /// This is the current Google collection URI used to validate measurement protocol hits. Data sent to this uri is not registered in GA and as a response you can see json object with validation result
         /// </summary>
-        //public static readonly Uri GOOGLE_COLLECTION_URI_DEBUG = new Uri("https://www.google-analytics.com/debug/collect");
+        public static readonly Uri GOOGLE_COLLECTION_URI_DEBUG = new Uri("https://www.google-analytics.com/debug/collect");
 
 
         /// <summary>
@@ -120,5 +120,30 @@ namespace UniversalAnalyticsHttpWrapper
                 _customPayload.Add(name, value);
             }
         }
+
+        /// <summary>
+        /// Validates current event (and existing payload data) and puts the result in a container object
+        /// </summary>
+        /// <param name="analyticsEvent">Events to track</param>
+        /// <returns>The result of the hit validation operation</returns>
+        public TrackingResult ValidateHit(IUniversalAnalyticsEvent analyticsEvent)
+        {
+            var result = new TrackingResult();
+
+            try
+            {
+                string postData = this._postDataBuilder.BuildPostDataString(MEASUREMENT_PROTOCOL_VERSION, analyticsEvent, _customPayload);
+                result.ValidationResult = _googleDataSender.SendData(GOOGLE_COLLECTION_URI_DEBUG, postData, /*bReadResponse*/ true);
+            }
+            catch (Exception e)
+            {
+                result.Exception = e;
+            }
+
+            return result;
+        }
+
+
+
     }
 }

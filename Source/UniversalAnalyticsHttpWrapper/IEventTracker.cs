@@ -31,5 +31,14 @@ namespace UniversalAnalyticsHttpWrapper
         /// <param name="name">Google Analytics Measurement Protocol short parameter name. for ex: aip, ds, qt, etc</param>
         /// <param name="value">Parameter value</param>
         void AddToCustomPayload(string name, string value);
+
+        /// <summary>
+        /// Validates current event (and existing payload data) and puts the result in a container object
+        /// https://developers.google.com/analytics/devguides/collection/protocol/v1/validating-hits
+        /// </summary>
+        /// <param name="analyticsEvent">Events to track</param>
+        /// <returns>The result of the hit validation operation</returns>
+        TrackingResult ValidateHit(IUniversalAnalyticsEvent analyticsEvent);
+
     }
 }

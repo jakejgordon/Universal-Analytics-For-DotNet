@@ -167,6 +167,18 @@ eventTracker.AddToCustomPayload("qt", "560");
 ```
 
 
+Validating hit. Since Google Analytics is not letting you know if the data you are suppliyng are valid from GA perspective (always returns 200 in production environment)
+developers are encouraged to validate some of the hits which are being sent vide a specifically designed debug endpoint /debug/collect. Some of the parameters value might be off, etc.
+Using the .ValidateHit method you can check if hit looks valid. See example below
+
+```c#
+IEventTracker eventTracker = new EventTracker();
+TrackingResult res = realEventTracker.ValidateHit(analyticsEvent);
+if(!res.ValidationStatus)	//validation has failed
+	DumpToDiskRequestAndAnalyseLater(analyticsEvent, res.ValidationResult);	//res.ValudationResult holds detailed information returned by GA on what is wrong with the hit
+
+```
+
 ## Notes
 The code is almost entirely unit/integration tested so it should be stable and easily updatable. I'm using it on my own site right now so you can find more specific examples at: https://github.com/jakejgordon/NemeStats 
 

@@ -46,6 +46,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
                 .Return(_nonInteractionHit);
         }
 
+        #region Tests
         [Test]
         public void ItPutsTheMeasurementProtocolVersionInTheString()
         {
@@ -146,6 +147,7 @@ namespace UniversalAnalyticsHttpWrapper.Tests
         }
 
 
+
         //added by Dmitry Klymenko, 15 Mar 2019
         [Test]
         public void ItPutsAdditionalPayload()
@@ -156,17 +158,92 @@ namespace UniversalAnalyticsHttpWrapper.Tests
             ValidateKeyValuePairIsSetOnPostData("qt", "560", nvc);
         }
 
-        private void ValidateKeyValuePairIsSetOnPostData(string key, string expectedValue, NameValueCollection customPayload = null)
+        [Test]
+        public void ItDoesntAddSupportedParameterAsACustomHitType()
         {
-            string postDataString = _postDataBuilder.BuildPostDataString(EventTracker.MEASUREMENT_PROTOCOL_VERSION, _analyticsEvent, customPayload);
+            string testedSupportedKey = PostDataBuilder.PARAMETER_KEY_HIT_TYPE;
+            string testedValue = "pageview";
+
+            NameValueCollection nvc = new NameValueCollection(1);
+            nvc.Add(testedSupportedKey, testedValue);
+
+            string postDataString = _postDataBuilder.BuildPostDataString(EventTracker.MEASUREMENT_PROTOCOL_VERSION, _analyticsEvent, nvc);
 
             NameValueCollection nameValueCollection = HttpUtility.ParseQueryString(postDataString);
-            string actualValue = nameValueCollection[key];
-            Assert.AreEqual(expectedValue, actualValue);
+            string actualValue = nameValueCollection[testedSupportedKey];
+            Assert.AreNotEqual(testedValue, actualValue);
 
+            var postDataCollection = _postDataBuilder.BuildPostDataCollection(EventTracker.MEASUREMENT_PROTOCOL_VERSION, _analyticsEvent, nvc);
+            string actualCollectionValue = postDataCollection.Single(s => s.Key == testedSupportedKey).Value;
+            Assert.AreNotEqual(testedValue, actualCollectionValue);
+        }
+
+        [Test]
+        public void ItDoesntAddSupportedParameterAsACustomUserId()
+        {
+            string testedSupportedKey = PostDataBuilder.PARAMETER_KEY_USER_ID;
+            string testedValue = "My_User_Id";
+
+            NameValueCollection nvc = new NameValueCollection(1);
+            nvc.Add(testedSupportedKey, testedValue);
+
+            string postDataString = _postDataBuilder.BuildPostDataString(EventTracker.MEASUREMENT_PROTOCOL_VERSION, _analyticsEvent, nvc);
+
+            NameValueCollection nameValueCollection = HttpUtility.ParseQueryString(postDataString);
+            string actualValue = nameValueCollection[testedSupportedKey];
+            Assert.AreNotEqual(testedValue, actualValue);
+
+            var postDataCollection = _postDataBuilder.BuildPostDataCollection(EventTracker.MEASUREMENT_PROTOCOL_VERSION, _analyticsEvent, nvc);
+            string actualCollectionValue = postDataCollection.Single(s => s.Key == testedSupportedKey).Value;
+            Assert.AreNotEqual(testedValue, actualCollectionValue);
+        }
+        #endregion
+
+
+
+
+        #region Private
+        private void ValidateKeyValuePairIsSetOnPostData(string key, string expectedValue, NameValueCollection customPayload = null)
+        {
+            ValidateKeyValuePairOnPostData(key, expectedValue, customPayload, true);
+        }
+
+        private void ValidateKeyValuePairIsNotSetOnPostData(string key, string expectedValue, NameValueCollection customPayload = null)
+        {
+            ValidateKeyValuePairOnPostData(key, expectedValue, customPayload, false);
+        }
+
+        private void ValidateKeyValuePairOnPostData(string key, string expectedValue, NameValueCollection customPayload, bool assertOnEqual)
+        {
+            //PostDataBuilder.BuildPostDataString
+            ValidateKeyValuePairOnPostDataBuildString(key, expectedValue, customPayload, assertOnEqual);
+
+            //PostDataBuilder.BuildPostDataCollection
+            ValidateKeyValuePairOnPostDataBuildCollection(key, expectedValue, customPayload, assertOnEqual);
+        }
+
+        private void ValidateKeyValuePairOnPostDataBuildString(string key, string expectedValue, NameValueCollection customPayload, bool assertOnEqual)
+        {
+            string postDataString = _postDataBuilder.BuildPostDataString(EventTracker.MEASUREMENT_PROTOCOL_VERSION, _analyticsEvent, customPayload);
+            NameValueCollection nameValueCollection = HttpUtility.ParseQueryString(postDataString);
+            string actualValue = nameValueCollection[key];
+            if (assertOnEqual)
+                Assert.AreEqual(expectedValue, actualValue);
+            else
+                Assert.AreNotEqual(expectedValue, actualValue);
+        }
+
+        private void ValidateKeyValuePairOnPostDataBuildCollection(string key, string expectedValue, NameValueCollection customPayload, bool assertOnEqual)
+        {
             var postDataCollection = _postDataBuilder.BuildPostDataCollection(EventTracker.MEASUREMENT_PROTOCOL_VERSION, _analyticsEvent, customPayload);
             string actualCollectionValue = postDataCollection.Single(s => s.Key == key).Value;
-            Assert.AreEqual(expectedValue, actualCollectionValue);
+
+            if (assertOnEqual)
+                Assert.AreEqual(expectedValue, actualCollectionValue);
+            else
+                Assert.AreNotEqual(expectedValue, actualCollectionValue);
         }
+        #endregion
+
     }
 }
